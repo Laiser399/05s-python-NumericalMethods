@@ -1,5 +1,4 @@
-import math
-from math import pi
+from math import pi, cosh, sqrt
 
 error = 10 ** -10
 
@@ -7,24 +6,26 @@ error = 10 ** -10
 def func(N: int):
     res = 1
     for k in range(1, N + 1):
-        res *= 1 + 1 / k ** 3
+        res *= 1 + 1 / k**3
     return res
 
 
 def find_N(error):
-    true_value = math.cosh(pi * math.sqrt(3) * 0.5) / pi
+    true_value = cosh(pi * sqrt(3) * 0.5) / pi
     val = 1
     k = 0
     while True:
         k += 1
-        val *= 1 + 1 / k ** 3
+        val *= 1 + 1 / k**3
         if abs(val - true_value) < error:
             return val, true_value, k
 
 
-res = find_N(error)
-print(res[0])
-print(res[1])
-print(res[2])
+if __name__ == "__main__":
+    res = find_N(error)
+    print("Result:     {}".format(res[0]))
+    print("True value: {}".format(res[1]))
+    print("Error:      {}".format(error))
+    print("K:          {}".format(res[2]))
 
 

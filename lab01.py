@@ -23,7 +23,8 @@ def find_N(error):
 
 if __name__ == "__main__":
     res = find_N(error)
-    print("Result:     {}".format(res[0]))
+    print("Result:     {}".format("{:.10f}".format(res[0])))
+    print("            {}".format(res[0]))
     print("True value: {}".format(res[1]))
     print("Error:      {}".format(error))
     print("K:          {}".format(res[2]))

@@ -3,7 +3,7 @@ from numpy import ndarray, array
 import numpy
 
 
-def solveByGauss(A: ndarray, f: ndarray):
+def solveByGauss(A: ndarray, f: ndarray) -> ndarray:
     def firstNotNullIndex(matrix: ndarray, startRow: int, column: int):
         for i in range(startRow, len(matrix)):
             if matrix[i][column] != 0:
@@ -33,16 +33,16 @@ def solveByGauss(A: ndarray, f: ndarray):
     return A[:, len(A)]
 
 
-def solveByDescent(A: ndarray, f: ndarray, x0: ndarray, error: float) -> (ndarray, int, []):
+def solveByDescent(A: ndarray, f: ndarray, x0: ndarray, error: float) -> (ndarray, int, list):
     def isEndCondition(x0: ndarray, x1: ndarray, r1: ndarray, error: float) -> bool:
         return norm(x1 - x0, ord=2) < error and norm(r1, ord=2) < error
 
     A_transposed = A.transpose()
-    A_norm = A_transposed.dot(A)
-    f_norm = A_transposed.dot(f)
+    A = A_transposed.dot(A)
+    f = A_transposed.dot(f)
 
     x1 = x0
-    r0 = A_norm.dot(x0) - f_norm
+    r0 = A.dot(x0) - f
     r1 = r0
 
     iter_error = 10 ** -2
@@ -56,11 +56,32 @@ def solveByDescent(A: ndarray, f: ndarray, x0: ndarray, error: float) -> (ndarra
                 return x1, k, intermediate_data
 
         k += 1
-        tau = (r0*r0).sum() / (A_norm.dot(r0) * r0).sum()
+        tau = scalarMulti(r0, r0) / scalarMulti(A.dot(r0), r0)
         x0, r0 = x1, r1
         x1 = x0 - tau * r0
-        r1 = A_norm.dot(x1) - f_norm
+        r1 = A.dot(x1) - f
+
+
+def solveByConjugateGradient(A: ndarray, f: ndarray, x0: ndarray) -> ndarray:
+    A_transposed = A.transpose()
+    A = A_transposed.dot(A)
+    f = A_transposed.dot(f)
+
+    r0 = A.dot(x0) - f
+    p0 = r0
+    for i in range(len(A)):
+        tau = scalarMulti(r0, p0) / scalarMulti(A.dot(p0), p0)
+        x1 = x0 - tau * p0
+        r1 = A.dot(x1) - f
+        beta = scalarMulti(A.dot(r1), p0) / scalarMulti(A.dot(p0), p0)
+        p1 = r1 - beta * p0
+
+        x0, r0, p0 = x1, r1, p1
+    return x1
 
 
 
+
+def scalarMulti(a: ndarray, b: ndarray):
+    return (a * b).sum()
 

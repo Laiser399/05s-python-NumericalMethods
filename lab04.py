@@ -27,7 +27,7 @@ def formatVector(vector) -> str:
 
 
 if __name__ == "__main__":
-    from lab04_solveModule import solveByGauss, solveByDescent
+    from lab04_solveModule import solveByGauss, solveByDescent, solveByConjugateGradient
     from lab04_data import A, f, error
 
     res = solveByGauss(A, f)
@@ -41,6 +41,10 @@ if __name__ == "__main__":
     for tuple in res[2]:
         print("E={}   X=({})   n(E)={}".format(float_template.format(tuple[0]),
                                                formatX(tuple[1], float_template), tuple[2]))
+
+    res = solveByConjugateGradient(A, f, x0)
+    print("\nConjugate gradient method")
+    print("X=({})".format(formatVector(res.transpose()[0])))
 
 
 

@@ -1,3 +1,6 @@
+# вычисление СЛАУ методами Гаусса, наискорейшего спуска и сопряженных градиентов
+
+
 from numpy import array, ndarray
 
 float_template = "{" + ":.{}f".format(7) + "}"

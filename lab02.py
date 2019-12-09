@@ -10,9 +10,6 @@ def func_derivative(x: float) -> float:
 
 
 def dichotomy_search(func, a: float, b: float, error: float) -> (float, int):
-    if a >= b or func(a) * func(b) >= 0 or error <= 0:
-        raise ValueError
-
     k = 0
     while b - a > error:
         k += 1

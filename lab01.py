@@ -12,19 +12,18 @@ def func(N: int):
     return res
 
 
-def find_N(error):
+def calculate(error):
     true_value = cosh(pi * sqrt(3) * 0.5) / pi
     val = 1
     k = 0
-    while True:
+    while abs(val - true_value) >= error:
         k += 1
         val *= 1 + 1 / k**3
-        if abs(val - true_value) < error:
-            return val, true_value, k
+    return val, true_value, k
 
 
 if __name__ == "__main__":
-    res = find_N(error)
+    res = calculate(error)
     print("Result:     {}".format("{:.10f}".format(res[0])))
     print("            {}".format(res[0]))
     print("True value: {}".format(res[1]))

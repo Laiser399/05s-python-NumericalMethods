@@ -1,5 +1,6 @@
 from math import sqrt, asin
 
+h = 10**-3
 error = 10**-5
 x0, y0 = -1, 1
 

@@ -1,6 +1,6 @@
-from numpy.linalg import norm
-from numpy import ndarray, array
 import numpy
+from numpy import ndarray
+from numpy.linalg import norm
 
 
 def solveByGauss(A: ndarray, f: ndarray) -> ndarray:
@@ -62,13 +62,19 @@ def solveByDescent(A: ndarray, f: ndarray, x0: ndarray, error: float) -> (ndarra
         r1 = A.dot(x1) - f
 
 
-def solveByConjugateGradient(A: ndarray, f: ndarray, x0: ndarray) -> ndarray:
+def solveByConjugateGradient(A: ndarray, f: ndarray, x0: ndarray) -> (ndarray, list):
+    def isIntermediateCondition(r: ndarray, error: float) -> bool:
+        return norm(r, ord=2) < error
+
     A_transposed = A.transpose()
     A = A_transposed.dot(A)
     f = A_transposed.dot(f)
 
     r0 = A.dot(x0) - f
     p0 = r0
+    x1 = x0
+    iterError = 10**-2
+    intermediateData = []
     for i in range(len(A)):
         tau = scalarMulti(r0, p0) / scalarMulti(A.dot(p0), p0)
         x1 = x0 - tau * p0
@@ -76,10 +82,12 @@ def solveByConjugateGradient(A: ndarray, f: ndarray, x0: ndarray) -> ndarray:
         beta = scalarMulti(A.dot(r1), p0) / scalarMulti(A.dot(p0), p0)
         p1 = r1 - beta * p0
 
+        while isIntermediateCondition(r1, iterError) and iterError > 10**-7:
+            intermediateData.append((iterError, x1, i + 1))
+            iterError *= 0.1
+
         x0, r0, p0 = x1, r1, p1
-    return x1
-
-
+    return x1, intermediateData
 
 
 def scalarMulti(a: ndarray, b: ndarray):

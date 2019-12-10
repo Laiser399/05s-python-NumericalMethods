@@ -1,6 +1,7 @@
 from numpy import array
 
 error = 10 ** -7
+x0 = array([[1, 1, 1, 1]]).transpose()
 
 A = array([
     [7.13,  3.25, -6.34, 4.52],

@@ -51,8 +51,5 @@ def calcSecondFraction(f, g, df_dx, df_dy, dg_dx, dg_dy, x: float, y: float) -> 
     return (a*g_xy - c*f_xy) / (a * d - b * c)
 
 
-def calcFunctions(x: float, y: float, *functions) -> []:
-    res = []
-    for func in functions:
-        res.append(func(x, y))
-    return res
+def calcFunctions(x: float, y: float, *functions) -> list:
+    return list(map(lambda func: func(x, y), functions))

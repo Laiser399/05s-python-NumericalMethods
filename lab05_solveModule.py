@@ -1,7 +1,7 @@
 from math import pow
 
 
-def solveByTrapezoid(a: float, b: float, func, error: float) -> float:
+def solveByTrapezoid(a: float, b: float, func, error: float) -> (float, int):
     n = findSplitsCount(b - a, 2, error)
     step = (b - a) / n
 
@@ -9,10 +9,10 @@ def solveByTrapezoid(a: float, b: float, func, error: float) -> float:
     for i in range(n):
         res += (func(x) + func(x + step)) * 0.5 * step
         x += step
-    return res
+    return res, n
 
 
-def solveBySimpson(a: float, b: float, func, error: float) -> float:
+def solveBySimpson(a: float, b: float, func, error: float) -> (float, int):
     n = findSplitsCount(b - a, 4, error)
     n = n * 2 if n % 2 != 0 else n
     step = (b - a) / n
@@ -21,7 +21,7 @@ def solveBySimpson(a: float, b: float, func, error: float) -> float:
     for i in range(n // 2):
         res += func(x) + 4*func(x + step) + func(x + 2*step)
         x += 2 * step
-    return res * step / 3
+    return res * step / 3, n
 
 
 def findSplitsCount(interval: float, r: int, error: float) -> int:
@@ -31,4 +31,3 @@ def findSplitsCount(interval: float, r: int, error: float) -> int:
         interval /= 2
         res *= 2
     return res
-
